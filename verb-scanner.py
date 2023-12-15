@@ -44,8 +44,11 @@ def find_shenase_from_mozare(shenase_mozare):
         return 5
     if shenase_mozare == 'ند':
         return 6
+
+
 def remove(string):
     return "".join(re.split(r'[\s,\u200c]+', string))
+
 
 with open('infinitive.txt', 'r', encoding='utf-8') as file:
     lines = file.readlines()
@@ -89,11 +92,9 @@ bon_mozare_pattern = '(?P<bon_mozare>' + f'{"|".join(bon_mozares.keys())})'
 
 bon_mozare_pattern_mianji = '(?P<bon_mozare>' + f'{"|".join(mianjis_mozare.keys())})'
 
-
 pishvands = ['فرو', 'باز', 'در', 'فرا', 'بر', 'فر', 'ور', 'وا', 'پیش', 'پس', 'هم']
 
 pishvand_patterns = '(?P<pishvand>' + f'{"|".join(pishvands)})'
-
 
 shenase_mazi_without_name = '(' + 'م|ی|یم|ید|ند)?'
 shenase_mazi = '(?P<shenase_mazi>' + 'م|ی|یم|ید|ند)?'
@@ -129,7 +130,8 @@ types = ['mazi_sade', 'mazi_naghli', 'mazi_estemrari', 'mazi_baeed', 'mazi_eltez
          'mazi_mostamar', 'mozare_ekhbari_mianji', 'mozare_eltezami_mianji', 'mozare_mostamar_mianji', 'mozare_ekhbari',
          'mozare_eltezami', 'mozare_mostamar', 'ayande']
 
-verb = 'می‌آوردم'
+verb = 'خواستم'
+# verb = 'پس می افتم'
 verb = remove(verb)
 results = []
 for regex in all_regex:
@@ -146,9 +148,9 @@ for regex in all_regex:
                     found_shenase_mazi = ''
                 shenase = find_shenase_from_mazi(found_shenase_mazi)
             bon_mazi = match.group('bon_mazi')
-
+            pishvand = match.group('pishvand')
             results.append(
-                {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase], 'tense': found_type})
+                {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase], 'tense': found_type, 'prefix': pishvand})
             # print(f'بن ماضی: {bon_mazi}', f'مصدر: {bon_mazis[bon_mazi]}', f'شناسه: {shakhs_name[shenase]}', sep='\n')
         if found_type.startswith('mozare'):
             if found_type.endswith('mianji'):
@@ -157,7 +159,8 @@ for regex in all_regex:
                 bon_mozare = match.group('bon_mozare')
             found_shenase_mozare = match.group('shenase_mozare')
             shenase = find_shenase_from_mozare(found_shenase_mozare)
-            results.append({'root': bon_mozares[bon_mozare], 'structure': None, 'person': shakhs_name[shenase],
+            pishvand = match.group('pishvand')
+            results.append({'root': bon_mozares[bon_mozare], 'structure': None, 'person': shakhs_name[shenase], 'prefix': pishvand,
                             'tense': found_type})
             print(regex)
             print(found_type)
@@ -167,8 +170,9 @@ for regex in all_regex:
             found_shenase_mozare = match.group('shenase_mozare')
             shenase = find_shenase_from_mozare(found_shenase_mozare)
             bon_mazi = match.group('bon_mazi')
+            pishvand = match.group('pishvand')
             results.append(
-                {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase], 'tense': found_type})
+                {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase], 'tense': found_type, 'prefix': pishvand})
             # print('آینده', f'بن: {bon_mazi}', f'مصدر: {bon_mazis[bon_mazi]}', f'شناسه: {shakhs_name[shenase]}', sep='\n')
         # print(found_type)
         # print('******************************')
