@@ -69,9 +69,9 @@ for line in lines:
     if columns[9] != "WRITTEN":
         continue
     if columns[-4] != "" and columns[-4] not in bon_mozares.keys():
-        bon_mozares[columns[-4]] = columns[1]
+        bon_mozares[remove(columns[-4])] = columns[1]
     if columns[-5] != "" and columns[-5] not in bon_mazis.keys():
-        bon_mazis[columns[-5]] = columns[1]
+        bon_mazis[remove(columns[-5])] = columns[1]
 
 # bon_mozare_pattern = list(set(bon_mozare_pattern))
 # bon_mazi_pattern = list(set(bon_mazi_pattern))
@@ -119,7 +119,7 @@ mozare_ekhbari_mianji = '^' + pishvand_patterns + 'ن?' + 'می ' + bon_mozare_p
 mozare_eltezami_mianji = '^' + pishvand_patterns + '(ن|ب)?' + bon_mozare_pattern_mianji + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
 mozare_mostamar_mianji = '^' + 'دار' + shenase_mozare_without_name + ' ' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
 
-ayande = '^' + 'ن?' + 'خواه' + shenase_mozare + ' ' + bon_mazi_pattern + '$'
+ayande = '^' + pishvand_patterns + '?' + 'ن?' + 'خواه' + shenase_mozare + ' ' + bon_mazi_pattern + '$'
 
 all_regex = [mazi_sade, mazi_naghli, mazi_estemrari, mazi_baeed, mazi_eltezami, mazi_mostamar,
              mozare_ekhbari_mianji, mozare_eltezami_mianji, mozare_mostamar_mianji, mozare_ekhbari, mozare_eltezami,
@@ -130,8 +130,8 @@ types = ['mazi_sade', 'mazi_naghli', 'mazi_estemrari', 'mazi_baeed', 'mazi_eltez
          'mazi_mostamar', 'mozare_ekhbari_mianji', 'mozare_eltezami_mianji', 'mozare_mostamar_mianji', 'mozare_ekhbari',
          'mozare_eltezami', 'mozare_mostamar', 'ayande']
 
-verb = 'خواستم'
-# verb = 'پس می افتم'
+# verb = 'خواهم کرد'
+verb = 'پس می افتم'
 verb = remove(verb)
 results = []
 for regex in all_regex:
@@ -148,7 +148,10 @@ for regex in all_regex:
                     found_shenase_mazi = ''
                 shenase = find_shenase_from_mazi(found_shenase_mazi)
             bon_mazi = match.group('bon_mazi')
-            pishvand = match.group('pishvand')
+            try:
+                pishvand = match.group('pishvand')
+            except:
+                pishvand = None
             results.append(
                 {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase], 'tense': found_type, 'prefix': pishvand})
             # print(f'بن ماضی: {bon_mazi}', f'مصدر: {bon_mazis[bon_mazi]}', f'شناسه: {shakhs_name[shenase]}', sep='\n')
@@ -159,18 +162,21 @@ for regex in all_regex:
                 bon_mozare = match.group('bon_mozare')
             found_shenase_mozare = match.group('shenase_mozare')
             shenase = find_shenase_from_mozare(found_shenase_mozare)
-            pishvand = match.group('pishvand')
+            try:
+                pishvand = match.group('pishvand')
+            except:
+                pishvand = None
             results.append({'root': bon_mozares[bon_mozare], 'structure': None, 'person': shakhs_name[shenase], 'prefix': pishvand,
                             'tense': found_type})
-            print(regex)
-            print(found_type)
-            print(all_regex.index(regex))
             # print(f'بن مضارع: {bon_mozare}', f'مصدر: {bon_mozares[bon_mozare]}', f'شناسه مضارع: {shakhs_name[shenase]}', sep='\n')
         if found_type.startswith('ayande'):
             found_shenase_mozare = match.group('shenase_mozare')
             shenase = find_shenase_from_mozare(found_shenase_mozare)
             bon_mazi = match.group('bon_mazi')
-            pishvand = match.group('pishvand')
+            try:
+                pishvand = match.group('pishvand')
+            except:
+                pishvand = None
             results.append(
                 {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase], 'tense': found_type, 'prefix': pishvand})
             # print('آینده', f'بن: {bon_mazi}', f'مصدر: {bon_mazis[bon_mazi]}', f'شناسه: {shakhs_name[shenase]}', sep='\n')
