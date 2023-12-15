@@ -59,7 +59,7 @@ shakhs_name = {
     3: 'او',
     4: 'ما',
     5: 'شما',
-    6: 'آنها'
+    6: 'ایشان'
 }
 
 bon_mazis = {}
@@ -145,7 +145,7 @@ def find_main_verb(verb_parts):
     return verb, prefix_words
 
 
-def find_verb_details(verbs):
+def find_verb_details(verbs, subject):
     our_verb = None
     if len(verbs) == 1:
         our_verb, prefix_words = find_main_verb(verbs[-1])
@@ -205,16 +205,40 @@ def find_verb_details(verbs):
                     {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase],
                      'tense': found_type,
                      'prefix': pishvand})
-    if prefix_words is not None:
-        for res in results:
+
+    for res in results:
+        if res['prefix'] is not None:
+            res['structure'] = 'prefixed'
+        elif prefix_words is not None:
             res['root'] = prefix_words + ' ' + res['root']
+            res['structure'] = 'compound'
+        else:
+            res['structure'] = 'simple'
 
-    return results
+    if len(results) == 0:
+        return None
+
+    if len(results) == 1:
+        return results[0]
 
 
-# verb = [['داشتم'], ['جبران', 'می کنم']]
-# verb = [['دارم'], ['می روم']]
-# verb = [['پس افتاد']]
-# res = find_verb_details(verb)
-# for x in res:
-#     print(x)
+    if subject == None:
+        for res in results:
+            if not res['tense'].endswith('mianji'):
+                return res
+        return results[0]
+    else:
+        for res in results:
+            if res['person'] == subject:
+                return res
+
+        res = results[0]
+        res['person'] = subject
+        return res
+
+verb = [['داشتم'], ['جبران', 'می کنم']]
+verb = [['دارم'], ['می روم']]
+verb = [['پس افتاد']]
+res = find_verb_details(verb)
+for x in res:
+    print(x)
