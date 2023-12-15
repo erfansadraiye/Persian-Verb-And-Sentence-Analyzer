@@ -218,11 +218,7 @@ def find_verb_details(verbs, subject):
     if len(results) == 0:
         return None
 
-    if len(results) == 1:
-        return results[0]
-
-
-    if subject == None:
+    if subject is None:
         for res in results:
             if not res['tense'].endswith('mianji'):
                 return res
@@ -235,10 +231,4 @@ def find_verb_details(verbs, subject):
         res = results[0]
         res['person'] = subject
         return res
-
-# verb = [['داشتم'], ['جبران', 'می کنم']]
-# verb = [['دارم'], ['می روم']]
-# verb = [['پس افتاد']]
-# res = find_verb_details(verb)
-# for x in res:
-#     print(x)
+    return results[0]

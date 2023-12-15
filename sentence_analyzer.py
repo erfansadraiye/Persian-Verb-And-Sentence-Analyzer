@@ -153,8 +153,3 @@ def analyze(sentence):
     # print("************************************************************************")
 
     return extracted_info_sentence
-
-
-if __name__ == "__main__":
-    text = "من به او خواهم گفت که سرباز پرتلاش دارد بر می‌گردد"
-    analyze(text)
