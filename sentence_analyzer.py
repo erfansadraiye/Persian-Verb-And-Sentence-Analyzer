@@ -3,7 +3,7 @@ import re
 
 tagger = POSTagger(model='pos_tagger.model')
 lemmatizer = Lemmatizer()
-
+normalizer = Normalizer()
 
 '''
 Returns a list of POS tagged sub_sentences, each of which is a str object.
@@ -118,31 +118,41 @@ def create_dependency_graph(sentence):
 def remove_brackets(chunked_sent):
     return re.subn('_', ' ', re.subn(r'\[|]|[A-Z]', '', chunked_sent)[0])[0]
 
-
-def main():
-    normalizer = Normalizer()
-    # text = input()
-    text = "من دارم جبران می‌کنم."
-    sentences = sent_tokenize(text)
-    index_start_sentence = 0
+def split_sentences_semantically(input_text):
+    sentences = sent_tokenize(input_text)
     for sentence in sentences:
         normalized_sentence = normalizer.normalize(sentence)
         print("currently working on:", normalized_sentence)
         chunked_sub_sentences = chunk_sentence(normalized_sentence)
-        for chunked_sub_sentence in chunked_sub_sentences:
-            print("Chunker\n", chunked_sub_sentence)
-            obj_from_chunker = extract_objects(chunked_sub_sentence) # list
-            print("OBJs:", obj_from_chunker)
-            verbs_from_chunker = extract_verb_phrases(chunked_sub_sentence) # list
-            print("VERBS:", verbs_from_chunker)
-            print("### ### ### ### ### ### ###\nDependency Parser ")
-            subj_from_parser, obj_from_parser, verbs = create_dependency_graph(remove_brackets(chunked_sub_sentence))
-            print("SUB:", subj_from_parser)
-            print("OBJ:", obj_from_parser)
-            print("VERBS", verbs)
 
-        print("************************************************************************")
-        index_start_sentence += len(sentence)
+
+def analyze(sentence):
+    extracted_info_sentence = {}
+    print("currently working on:", sentence)
+    chunked_sub_sentences = chunk_sentence(sentence)
+    for chunked_sub_sentence in chunked_sub_sentences:
+        print("Chunker\n", chunked_sub_sentence)
+        obj_chunker = extract_objects(chunked_sub_sentence) # list
+        print("OBJs:", obj_chunker)
+        verbs_chunker = extract_verb_phrases(chunked_sub_sentence) # list
+        print("VERBS:", verbs_chunker)
+        print("### ### ### ### ### ### ###\nDependency Parser ")
+        sub_dependency_graph, obj_dependency_graph, verbs_dependency_graph = create_dependency_graph(remove_brackets(chunked_sub_sentence))
+        print("SUB:", sub_dependency_graph)
+        print("OBJ:", obj_dependency_graph)
+        print("VERBS", verbs_dependency_graph)
+
+        extracted_info_sentence["obj_chunker"] = obj_chunker
+        extracted_info_sentence["verbs_chunker"] = verbs_chunker
+        extracted_info_sentence["sub_dependency_graph"] = sub_dependency_graph
+        extracted_info_sentence["obj_dependency_graph"] = obj_dependency_graph
+        extracted_info_sentence["verbs_dependency_graph"] = verbs_dependency_graph
+
+    print("************************************************************************")
+
+    return extracted_info_sentence
+
 
 if __name__ == "__main__":
-    main()
+    text = "من به او خواهم گفت که سرباز پرتلاش دارد بر می‌گردد"
+    analyze(text)
