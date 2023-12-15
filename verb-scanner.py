@@ -102,7 +102,7 @@ shenase_naghli_without_name = '(' + 'ام|ای|است|ایم|اید|اند)'
 shenase_mozare = '(?P<shenase_mozare>' + 'م|ی|د|یم|ید|ند)'
 shenase_mozare_without_name = '(' + 'م|ی|د|یم|ید|ند)'
 
-mazi_sade = '^' + 'ن?' + bon_mazi_pattern + shenase_mazi + '$'
+mazi_sade = '^' + pishvand_patterns + '?' + 'ن?' + bon_mazi_pattern + shenase_mazi + '$'
 mazi_naghli = '^' + 'ن?' + bon_mazi_pattern + 'ه ' + shenase_naghli + '$'
 mazi_estemrari = '^' + 'ن?' + 'می ' + bon_mazi_pattern + shenase_mazi + '$'
 mazi_naghli_mostamar = '^' + 'ن?' + 'داشته' + shenase_naghli_without_name + 'می ' + 'ن?' + bon_mazi_pattern + 'ه ' + shenase_naghli + '$'
