@@ -89,6 +89,12 @@ bon_mozare_pattern = '(?P<bon_mozare>' + f'{"|".join(bon_mozares.keys())})'
 
 bon_mozare_pattern_mianji = '(?P<bon_mozare>' + f'{"|".join(mianjis_mozare.keys())})'
 
+
+pishvands = ['فرو', 'باز', 'در', 'فرا', 'بر', 'فر', 'ور', 'وا', 'پیش', 'پس', 'هم']
+
+pishvand_patterns = '(?P<pishvand>' + f'{"|".join(pishvands)})'
+
+
 shenase_mazi_without_name = '(' + 'م|ی|یم|ید|ند)?'
 shenase_mazi = '(?P<shenase_mazi>' + 'م|ی|یم|ید|ند)?'
 shenase_naghli = '(?P<shenase_naghli>' + 'ام|ای|است|ایم|اید|اند)'
