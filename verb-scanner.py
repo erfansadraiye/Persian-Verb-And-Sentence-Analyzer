@@ -115,8 +115,8 @@ mozare_ekhbari = '^' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pa
 mozare_eltezami = '^' + pishvand_patterns + '?' + '(ن|ب)?' + bon_mozare_pattern + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
 mozare_mostamar = '^' + 'دار' + shenase_mozare_without_name + ' ' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pattern + shenase_mozare + '$'
 
-mozare_ekhbari_mianji = '^' + pishvand_patterns + 'ن?' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
-mozare_eltezami_mianji = '^' + pishvand_patterns + '(ن|ب)?' + bon_mozare_pattern_mianji + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
+mozare_ekhbari_mianji = '^' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
+mozare_eltezami_mianji = '^' + pishvand_patterns + '?' + '(ن|ب)?' + bon_mozare_pattern_mianji + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
 mozare_mostamar_mianji = '^' + 'دار' + shenase_mozare_without_name + ' ' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
 
 ayande = '^' + pishvand_patterns + '?' + 'ن?' + 'خواه' + shenase_mozare + ' ' + bon_mazi_pattern + '$'
