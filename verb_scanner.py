@@ -131,8 +131,30 @@ types = ['mazi_sade', 'mazi_naghli', 'mazi_estemrari', 'mazi_baeed', 'mazi_eltez
          'mozare_eltezami', 'mozare_mostamar', 'ayande']
 
 
-def find_verb_details(verb):
-    verb = remove_whitespaces(verb)
+# verb = [['دارم'], ['جبران' ,'می کنم']]
+
+
+def find_main_verb(verb_parts):
+    verb = None
+    prefix_words = None
+    if len(verb_parts) == 1:
+        verb = verb_parts[0]
+    elif len(verb_parts) > 1:
+        verb = verb_parts[-1]
+        prefix_words = " ".join(verb_parts[:-1])
+    return verb, prefix_words
+
+
+def find_verb_details(verbs):
+    our_verb = None
+    if len(verbs) == 1:
+        our_verb, prefix_words = find_main_verb(verbs[-1])
+    elif len(verbs) > 1:
+        first_verb, _ = find_main_verb(verbs[-2])
+        second_verb, prefix_words = find_main_verb(verbs[-1])
+        our_verb = first_verb + second_verb
+
+    verb = remove_whitespaces(our_verb)
     results = []
     for regex in all_regex:
         if match := re.match(regex, verb):
@@ -183,10 +205,16 @@ def find_verb_details(verb):
                     {'root': bon_mazis[bon_mazi], 'structure': None, 'person': shakhs_name[shenase],
                      'tense': found_type,
                      'prefix': pishvand})
+    if prefix_words is not None:
+        for res in results:
+            res['root'] = prefix_words + ' ' + res['root']
+
     return results
 
 
-verb = 'ایستاده ام'
+verb = [['داشتم'], ['جبران', 'می کنم']]
+verb = [['دارم'], ['می روم']]
+verb = [['پس افتاد']]
 res = find_verb_details(verb)
 for x in res:
     print(x)
