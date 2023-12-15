@@ -1,18 +1,43 @@
 import re
-from collections import defaultdict
 
 from sentence_analyzer import analyze
 from sentence_analyzer import split_sentences_semantically
 from sentence_analyzer import convert_chunked_to_normal
 from verb_scanner import find_verb_details
 
-if __name__ == '__main__':
-    text = 'من داشتم به پارک میرفتم. من داشتم می‌رفتم. من داشتم می‌رفتم.'
+normalized_tense = {
+    "mazi_sade": "گذشته ساده",
+    "mazi_estemrari": "گذشته پیوسته",
+    "mazi_naghli": "گذشته زنده",
+    "mazi_baeed": "گذشته دور",
+    "mazi_eltezami": "گذشته درخواستی",
+    "mazi_mostamar": "گذشته ملموس",
 
+    "mozare_ekhbari": "حال اخباری",
+    "mozare_ekhbari_mianji": "حال اخباری",
+    "mozare_eltezami": "حال التزامی",
+    "mozare_eltezami_mianji": "حال التزامی",
+    "mozare_mostamar": "حال ملموس",
+    "mozare_mostamar_mianji": "حال ملموس",
+    "ayande": "آینده ساده"
+}
+
+normalized_person = {
+    'من': 'اول شخص مفرد',
+    'تو': 'دوم شخص مفرد',
+    'او': 'سوم شخص مفرد',
+    'ما': 'اول شخص جمع',
+    'شما': 'دوم شخص جمع',
+    'ایشان': 'سوم شخص جمع',
+}
+
+
+def run(text):
     sentences = split_sentences_semantically(text)
     sentences = [convert_chunked_to_normal(sentence) for sentence in sentences]
 
     seen_verbs = {}
+    final_results = []
     for sentence in sentences:
         extracted_info = analyze(sentence)
         spans_sentence = []
@@ -35,13 +60,24 @@ if __name__ == '__main__':
 
         subject = extracted_info["sub_dependency_graph"]
         list_subjects = ['من', 'تو', 'ما', 'شما', 'ایشان']
-        if "".join(subject.split()) == 'آنها':
-            subject = 'ایشان'
-        if subject not in list_subjects:
-            subject = 'او'
+        if subject is not None:
+            if "".join(subject.split()) == 'آنها':
+                subject = 'ایشان'
+            if subject not in list_subjects:
+                subject = 'او'
 
         details = find_verb_details(extracted_info["verbs_dependency_graph"], subject)
-        print(details)
-        print(spans_sentence)
-
-
+        final_result = {
+            "verb": {
+                "span": spans_sentence,
+                "root": details['root'],
+                "structure": details['structure'],
+                "person": normalized_person[details['person']],
+                "tense": normalized_tense[details['tense']],
+                "prefix": details['prefix']
+            },
+            "subject phrase": extracted_info["sub_dependency_graph"],
+            "object phrase": extracted_info["obj_dependency_graph"],
+        }
+        final_results.append(final_result)
+    return final_results

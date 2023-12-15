@@ -49,13 +49,6 @@ def extract_objects(chunked):
     return objects
 
 
-'''
-Receives a node from dependency graph and prints its word, part os speech tag, and rel. 
-'''
-def print_tagged_word(info):
-    print(info['word'], '-> rel:', info['rel'], ', tag:', info['tag'])
-
-
 def extract_subj_from_dependency_graph(dependencyGraph, info):
     subj_parts = []
     if info['deps']:  # if had dependencies
@@ -133,7 +126,7 @@ def split_sentences_semantically(input_text):
 
 def analyze(sentence):
     extracted_info_sentence = {}
-    print("currently working on:", sentence)
+    # print("currently working on:", sentence)
     chunked_sub_sentences = chunk_sentence(sentence)
     for chunked_sub_sentence in chunked_sub_sentences:
         # print("Chunker\n", chunked_sub_sentence)
@@ -157,7 +150,7 @@ def analyze(sentence):
 
 
 
-    print("************************************************************************")
+    # print("************************************************************************")
 
     return extracted_info_sentence
 
