@@ -236,9 +236,9 @@ def find_verb_details(verbs, subject):
         res['person'] = subject
         return res
 
-verb = [['داشتم'], ['جبران', 'می کنم']]
-verb = [['دارم'], ['می روم']]
-verb = [['پس افتاد']]
-res = find_verb_details(verb)
-for x in res:
-    print(x)
+# verb = [['داشتم'], ['جبران', 'می کنم']]
+# verb = [['دارم'], ['می روم']]
+# verb = [['پس افتاد']]
+# res = find_verb_details(verb)
+# for x in res:
+#     print(x)

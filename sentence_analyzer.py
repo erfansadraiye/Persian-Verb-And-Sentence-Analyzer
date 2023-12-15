@@ -32,8 +32,8 @@ def chunk_sentence(sentence):
 
 
 def clean_verb(verb_phase):
-    return re.subn('\u200c|_', ' ', verb_phase)[0]
-
+    # return verb_phase      \u200c
+    return re.subn('_', ' ', verb_phase)[0]
 
 def extract_verb_phrases(chunked):
     verb_phrase_pattern = re.compile(r'\[([^\[]+?) VP]')
@@ -114,17 +114,19 @@ def create_dependency_graph(sentence):
     # print(dependencyGraph)
     return (subj, obj, verbs)
 
-
-def remove_brackets(chunked_sent):
-    return re.subn('_', ' ', re.subn(r'\[|]|[A-Z]', '', chunked_sent)[0])[0]
+def convert_chunked_to_normal(chunked_sent):
+    removed_brackets = re.subn(r'\[|]', '', chunked_sent)[0]
+    removed_alphabets = re.subn(r'[A-Z]', '', removed_brackets)[0]
+    removed_underscores = re.subn('_', ' ', removed_alphabets)[0]
+    removed_extra_spaces = re.subn(r'\s(?=[a-zA-Z])', '', removed_underscores)[0]
+    return removed_extra_spaces
 
 def split_sentences_semantically(input_text):
     all_sub_sentences = []
     sentences = sent_tokenize(input_text)
     for sentence in sentences:
-        normalized_sentence = normalizer.normalize(sentence)
-        print("currently working on:", normalized_sentence)
-        chunked_sub_sentences = chunk_sentence(normalized_sentence)
+        # normalized_sentence = normalizer.normalize(sentence)
+        chunked_sub_sentences = chunk_sentence(sentence)
         all_sub_sentences.extend(chunked_sub_sentences)
     return all_sub_sentences
 
@@ -139,9 +141,9 @@ def analyze(sentence):
         # print("OBJs:", obj_chunker)
         verbs_chunker = extract_verb_phrases(chunked_sub_sentence) # list
         # print("VERBS:", verbs_chunker)
-        verb_spans = [(sentence.index(verb), sentence.index(verb) + len(verb)) for verb in verbs_chunker]
+        # verb_spans = [(sentence.index(verb), sentence.index(verb) + len(verb)) for verb in verbs_chunker]
         # print("### ### ### ### ### ### ###\nDependency Parser ")
-        sub_dependency_graph, obj_dependency_graph, verbs_dependency_graph = create_dependency_graph(remove_brackets(chunked_sub_sentence))
+        sub_dependency_graph, obj_dependency_graph, verbs_dependency_graph = create_dependency_graph(convert_chunked_to_normal(chunked_sub_sentence))
         # print("SUB:", sub_dependency_graph)
         # print("OBJ:", obj_dependency_graph)
         # print("VERBS", verbs_dependency_graph)
@@ -151,7 +153,7 @@ def analyze(sentence):
         extracted_info_sentence["sub_dependency_graph"] = sub_dependency_graph
         extracted_info_sentence["obj_dependency_graph"] = obj_dependency_graph
         extracted_info_sentence["verbs_dependency_graph"] = verbs_dependency_graph
-        extracted_info_sentence["verb_spans"] = verb_spans
+        # extracted_info_sentence["verb_spans"] = verb_spans
 
 
 
