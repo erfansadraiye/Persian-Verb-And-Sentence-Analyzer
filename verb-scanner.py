@@ -103,29 +103,29 @@ shenase_mozare = '(?P<shenase_mozare>' + 'م|ی|د|یم|ید|ند)'
 shenase_mozare_without_name = '(' + 'م|ی|د|یم|ید|ند)'
 
 mazi_sade = '^' + pishvand_patterns + '?' + 'ن?' + bon_mazi_pattern + shenase_mazi + '$'
-mazi_naghli = '^' + 'ن?' + bon_mazi_pattern + 'ه ' + shenase_naghli + '$'
-mazi_estemrari = '^' + 'ن?' + 'می ' + bon_mazi_pattern + shenase_mazi + '$'
-mazi_naghli_mostamar = '^' + 'ن?' + 'داشته' + shenase_naghli_without_name + 'می ' + 'ن?' + bon_mazi_pattern + 'ه ' + shenase_naghli + '$'
-mazi_baeed = '^' + 'ن?' + bon_mazi_pattern + 'ه بود' + shenase_mazi + '$'
-mazi_eltezami = '^' + 'ن?' + bon_mazi_pattern + 'ه باش' + shenase_mazi + '$'
-mazi_mostamar = '^' + 'داشت' + shenase_mazi_without_name + ' ' + 'ن?' + 'می ' + bon_mazi_pattern + shenase_mazi + '$'
+mazi_naghli = '^' + pishvand_patterns + '?' + 'ن?' + bon_mazi_pattern + 'ه ' + shenase_naghli + '$'
+mazi_estemrari = '^' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mazi_pattern + shenase_mazi + '$'
+# mazi_naghli_mostamar = '^' + 'ن?' + 'داشته' + shenase_naghli_without_name + 'می ' + 'ن?' + bon_mazi_pattern + 'ه ' + shenase_naghli + '$'
+mazi_baeed = '^' + pishvand_patterns + '?' + 'ن?' + bon_mazi_pattern + 'ه بود' + shenase_mazi + '$'
+mazi_eltezami = '^' + pishvand_patterns + '?' + 'ن?' + bon_mazi_pattern + 'ه باش' + shenase_mazi + '$'
+mazi_mostamar = '^' + 'داشت' + shenase_mazi_without_name + ' ' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mazi_pattern + shenase_mazi + '$'
 
-mozare_ekhbari = '^' + 'ن?' + 'می ' + bon_mozare_pattern + shenase_mozare + '$'
-mozare_eltezami = '^' + '(ن|ب)?' + bon_mozare_pattern + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
-mozare_mostamar = '^' + 'دار' + shenase_mozare_without_name + ' ' + 'می ' + bon_mozare_pattern + shenase_mozare + '$'
+mozare_ekhbari = '^' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pattern + shenase_mozare + '$'
+mozare_eltezami = '^' + pishvand_patterns + '?' + '(ن|ب)?' + bon_mozare_pattern + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
+mozare_mostamar = '^' + 'دار' + shenase_mozare_without_name + ' ' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pattern + shenase_mozare + '$'
 
-mozare_ekhbari_mianji = '^' + 'ن?' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
-mozare_eltezami_mianji = '^' + '(ن|ب)?' + bon_mozare_pattern_mianji + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
-mozare_mostamar_mianji = '^' + 'دار' + shenase_mozare_without_name + ' ' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
+mozare_ekhbari_mianji = '^' + pishvand_patterns + 'ن?' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
+mozare_eltezami_mianji = '^' + pishvand_patterns + '(ن|ب)?' + bon_mozare_pattern_mianji + shenase_mozare + '$'  # ب میتونه حذف شه  این نکته دارد
+mozare_mostamar_mianji = '^' + 'دار' + shenase_mozare_without_name + ' ' + pishvand_patterns + '?' + 'ن?' + 'می ' + bon_mozare_pattern_mianji + shenase_mozare + '$'
 
 ayande = '^' + 'ن?' + 'خواه' + shenase_mozare + ' ' + bon_mazi_pattern + '$'
 
-all_regex = [mazi_sade, mazi_naghli, mazi_estemrari, mazi_naghli_mostamar, mazi_baeed, mazi_eltezami, mazi_mostamar,
+all_regex = [mazi_sade, mazi_naghli, mazi_estemrari, mazi_baeed, mazi_eltezami, mazi_mostamar,
              mozare_ekhbari_mianji, mozare_eltezami_mianji, mozare_mostamar_mianji, mozare_ekhbari, mozare_eltezami,
              mozare_mostamar, ayande]
 all_regex = [remove(x) for x in all_regex]
 
-types = ['mazi_sade', 'mazi_naghli', 'mazi_estemrari', 'mazi_naghli_mostamar', 'mazi_baeed', 'mazi_eltezami',
+types = ['mazi_sade', 'mazi_naghli', 'mazi_estemrari', 'mazi_baeed', 'mazi_eltezami',
          'mazi_mostamar', 'mozare_ekhbari_mianji', 'mozare_eltezami_mianji', 'mozare_mostamar_mianji', 'mozare_ekhbari',
          'mozare_eltezami', 'mozare_mostamar', 'ayande']
 
