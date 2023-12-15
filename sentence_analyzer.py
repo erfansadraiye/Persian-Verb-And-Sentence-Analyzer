@@ -1,9 +1,11 @@
 from hazm import *
 import re
 
-tagger = POSTagger(model='pos_tagger.model')
 lemmatizer = Lemmatizer()
 normalizer = Normalizer()
+tagger = POSTagger(model='pos_tagger.model')
+chunker = Chunker(model='chunker.model')
+parser = DependencyParser(tagger=tagger, lemmatizer=lemmatizer)
 
 '''
 Returns a list of POS tagged sub_sentences, each of which is a str object.
@@ -11,7 +13,6 @@ If the sentences is not a compound of multiple sentences, the list will have one
 '''
 def chunk_sentence(sentence):
     tagged = tagger.tag(word_tokenize(sentence))
-    chunker = Chunker(model='chunker.model')
     tree = chunker.parse(tagged)
     chunked = tree2brackets(tree)
     separator_pattern = re.compile(r'] ([^\[ ]+?) \[')
@@ -98,7 +99,6 @@ def extract_verbs_from_dependency_graph(dependencyGraph, info):
 
 
 def create_dependency_graph(sentence):
-    parser = DependencyParser(tagger=tagger, lemmatizer=lemmatizer)
     dependencyGraph = parser.parse(word_tokenize(sentence))
     subj = None
     obj = None
@@ -119,11 +119,14 @@ def remove_brackets(chunked_sent):
     return re.subn('_', ' ', re.subn(r'\[|]|[A-Z]', '', chunked_sent)[0])[0]
 
 def split_sentences_semantically(input_text):
+    all_sub_sentences = []
     sentences = sent_tokenize(input_text)
     for sentence in sentences:
         normalized_sentence = normalizer.normalize(sentence)
         print("currently working on:", normalized_sentence)
         chunked_sub_sentences = chunk_sentence(normalized_sentence)
+        all_sub_sentences.extend(chunked_sub_sentences)
+    return all_sub_sentences
 
 
 def analyze(sentence):
@@ -131,16 +134,16 @@ def analyze(sentence):
     print("currently working on:", sentence)
     chunked_sub_sentences = chunk_sentence(sentence)
     for chunked_sub_sentence in chunked_sub_sentences:
-        print("Chunker\n", chunked_sub_sentence)
+        # print("Chunker\n", chunked_sub_sentence)
         obj_chunker = extract_objects(chunked_sub_sentence) # list
-        print("OBJs:", obj_chunker)
+        # print("OBJs:", obj_chunker)
         verbs_chunker = extract_verb_phrases(chunked_sub_sentence) # list
-        print("VERBS:", verbs_chunker)
-        print("### ### ### ### ### ### ###\nDependency Parser ")
+        # print("VERBS:", verbs_chunker)
+        # print("### ### ### ### ### ### ###\nDependency Parser ")
         sub_dependency_graph, obj_dependency_graph, verbs_dependency_graph = create_dependency_graph(remove_brackets(chunked_sub_sentence))
-        print("SUB:", sub_dependency_graph)
-        print("OBJ:", obj_dependency_graph)
-        print("VERBS", verbs_dependency_graph)
+        # print("SUB:", sub_dependency_graph)
+        # print("OBJ:", obj_dependency_graph)
+        # print("VERBS", verbs_dependency_graph)
 
         extracted_info_sentence["obj_chunker"] = obj_chunker
         extracted_info_sentence["verbs_chunker"] = verbs_chunker

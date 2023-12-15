@@ -212,9 +212,9 @@ def find_verb_details(verbs):
     return results
 
 
-verb = [['داشتم'], ['جبران', 'می کنم']]
-verb = [['دارم'], ['می روم']]
-verb = [['پس افتاد']]
-res = find_verb_details(verb)
-for x in res:
-    print(x)
+# verb = [['داشتم'], ['جبران', 'می کنم']]
+# verb = [['دارم'], ['می روم']]
+# verb = [['پس افتاد']]
+# res = find_verb_details(verb)
+# for x in res:
+#     print(x)
