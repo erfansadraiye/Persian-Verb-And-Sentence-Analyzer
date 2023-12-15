@@ -126,30 +126,18 @@ def split_sentences_semantically(input_text):
 
 def analyze(sentence):
     extracted_info_sentence = {}
-    # print("currently working on:", sentence)
     chunked_sub_sentences = chunk_sentence(sentence)
     for chunked_sub_sentence in chunked_sub_sentences:
-        # print("Chunker\n", chunked_sub_sentence)
         obj_chunker = extract_objects(chunked_sub_sentence) # list
-        # print("OBJs:", obj_chunker)
         verbs_chunker = extract_verb_phrases(chunked_sub_sentence) # list
-        # print("VERBS:", verbs_chunker)
-        # verb_spans = [(sentence.index(verb), sentence.index(verb) + len(verb)) for verb in verbs_chunker]
-        # print("### ### ### ### ### ### ###\nDependency Parser ")
         sub_dependency_graph, obj_dependency_graph, verbs_dependency_graph = create_dependency_graph(convert_chunked_to_normal(chunked_sub_sentence))
-        # print("SUB:", sub_dependency_graph)
-        # print("OBJ:", obj_dependency_graph)
-        # print("VERBS", verbs_dependency_graph)
 
         extracted_info_sentence["obj_chunker"] = obj_chunker
         extracted_info_sentence["verbs_chunker"] = verbs_chunker
         extracted_info_sentence["sub_dependency_graph"] = sub_dependency_graph
         extracted_info_sentence["obj_dependency_graph"] = obj_dependency_graph
         extracted_info_sentence["verbs_dependency_graph"] = verbs_dependency_graph
-        # extracted_info_sentence["verb_spans"] = verb_spans
 
 
-
-    # print("************************************************************************")
 
     return extracted_info_sentence
