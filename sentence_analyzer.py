@@ -139,6 +139,7 @@ def analyze(sentence):
         # print("OBJs:", obj_chunker)
         verbs_chunker = extract_verb_phrases(chunked_sub_sentence) # list
         # print("VERBS:", verbs_chunker)
+        verb_spans = [(sentence.index(verb), sentence.index(verb) + len(verb)) for verb in verbs_chunker]
         # print("### ### ### ### ### ### ###\nDependency Parser ")
         sub_dependency_graph, obj_dependency_graph, verbs_dependency_graph = create_dependency_graph(remove_brackets(chunked_sub_sentence))
         # print("SUB:", sub_dependency_graph)
@@ -150,6 +151,9 @@ def analyze(sentence):
         extracted_info_sentence["sub_dependency_graph"] = sub_dependency_graph
         extracted_info_sentence["obj_dependency_graph"] = obj_dependency_graph
         extracted_info_sentence["verbs_dependency_graph"] = verbs_dependency_graph
+        extracted_info_sentence["verb_spans"] = verb_spans
+
+
 
     print("************************************************************************")
 
