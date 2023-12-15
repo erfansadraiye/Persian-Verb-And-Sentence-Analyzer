@@ -67,6 +67,8 @@ def run(text):
                 subject = 'او'
 
         details = find_verb_details(extracted_info["verbs_dependency_graph"], subject)
+        if details is None:
+            continue
         final_result = {
             "verb": {
                 "span": spans_sentence,
